@@ -2,364 +2,661 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>JimoTown • Post Lab</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&family=Space+Grotesk:wght@400;700&family=Bebas+Neue&family=Playfair+Display:wght@700;900&family=Inter:wght@400;600&family=Poppins:wght@600;700&family=Manrope:wght@700&family=Clash+Grotesk:wght@600;700&family=Instrument+Sans:wght@600;700&family=Pinyon+Script&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>JimoTown Meme Maker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Oswald:wght@700&family=Playfair+Display:wght@700&family=Permanent+Marker&family=Pacifico&family=Montserrat:wght@900&family=Abril+Fatface&family=Bangers&family=Lobster&family=Righteous&family=Black+Han+Sans&family=Russo+One&family=Teko:wght@700&family=Squada+One&family=Barlow+Condensed:wght@800&family=Chakra+Petch:wght@700&family=DM+Serif+Display&family=Titan+One&family=Black+Ops+One&family=Raleway:wght@900&family=Kanit:wght@800&family=Alfa+Slab+One&family=Sigmar+One&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0a;
-    --panel: #111111;
-    --surface: #161616;
-    --border: #242424;
-    --accent: #e8ff47;
-    --text: #f0f0f0;
-    --muted: #888;
+    --bg: #000000;
+    --surface: #1c1c1e;
+    --surface2: #2c2c2e;
+    --accent: #ff2d95;
+    --accent2: #00d4ff;
+    --text: #ffffff;
+    --muted: #8e8e93;
+    --border: rgba(255,255,255,0.08);
+    --radius: 20px; /* iOS-style big radius */
   }
 
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
-  
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
   html, body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100dvh;
-    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 
-  body { display: flex; flex-direction: column; }
-
-  header {
-    padding: 16px 20px;
+  /* iOS-STYLE HEADER */
+  .header {
+    background: rgba(30,30,30,0.95);
     border-bottom: 1px solid var(--border);
-    background: rgba(10,10,10,0.98);
-    backdrop-filter: blur(16px);
+    padding: 12px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
     top: 0;
     z-index: 100;
+    backdrop-filter: blur(20px);
+    height: 54px;
   }
-
   .logo {
-    font-family: 'Syne', sans-serif;
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -1px;
-    background: linear-gradient(90deg, var(--accent), #fff);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, #ff2d95, #00d4ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-
-  .main {
-    flex: 1;
-    padding: 16px 20px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-width: 480px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  .preview-section { width: 100%; }
-  .preview-header {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
+  .header-tag {
+    font-size: 13px;
+    font-weight: 600;
     color: var(--muted);
-    margin-bottom: 10px;
-    letter-spacing: 1px;
-    text-align: center;
+    letter-spacing: 0.5px;
   }
 
-  .preview-frame {
-    width: 100%;
-    aspect-ratio: 9 / 16;
-    background: #000;
-    border-radius: 28px;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-    border: 1px solid #222;
-  }
-
-  #previewCanvas { width: 100%; height: 100%; object-fit: contain; background: #000; }
-
-  .controls-section {
-    background: var(--panel);
-    border-radius: 24px;
-    border: 1px solid var(--border);
-    padding: 20px;
+  /* TABS - iOS style */
+  .tabs {
     display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .section-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .bg-button {
-    width: 100%;
-    padding: 18px;
     background: var(--surface);
-    border: 2px dashed var(--border);
-    border-radius: 18px;
-    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 54px;
+    z-index: 99;
+  }
+  .tab {
+    flex: 1;
+    padding: 14px 8px;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
+    color: var(--muted);
+    background: none;
+    border: none;
     cursor: pointer;
     transition: all 0.2s;
+  }
+  .tab.active {
+    color: var(--text);
+    font-weight: 700;
+  }
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    width: 60%;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 3px;
+  }
+
+  /* MAIN LAYOUT - more compact */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  @media (min-width: 768px) {
+    .main { grid-template-columns: 360px 1fr; }
+    .tabs { display: none; }
+    .panel { display: block !important; }
+    .preview-panel { display: flex !important; }
+  }
+
+  .panel {
+    padding: 16px;
+    display: none;
+  }
+  .panel.active { display: block; }
+  .preview-panel {
+    padding: 24px 16px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    position: sticky;
+    top: 54px;
+  }
+  .preview-panel.active { display: flex; }
+
+  /* COMPACT SECTIONS - iOS card style */
+  .section {
+    margin-bottom: 14px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .section-head {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  .section-body { padding: 14px 16px; }
+
+  /* TEXTAREA - iOS style */
+  textarea {
+    width: 100%;
+    min-height: 88px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    font-family: -apple-system, sans-serif;
+    font-size: 17px;
+    padding: 14px;
+    resize: vertical;
+    outline: none;
+  }
+  textarea:focus { border-color: var(--accent); }
+
+  /* ALIGN BUTTONS */
+  .align-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .align-btn {
+    flex: 1;
+    padding: 10px 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .align-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  /* FONT DROPDOWN - iOS picker style */
+  select {
+    width: 100%;
+    height: 52px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    font-size: 17px;
+    padding: 0 16px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238e8e93' d='M1 1L6 7L11 1' stroke='%238e8e93' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-position: right 16px center;
+    background-repeat: no-repeat;
+  }
+
+  /* SLIDERS - compact iOS style */
+  .slider-row {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 12px;
+    padding: 10px 0;
+  }
+  .slider-label {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 600;
+    min-width: 88px;
+  }
+  input[type=range] {
+    flex: 1;
+    height: 4px;
+    background: #3a3a3c;
+    border-radius: 4px;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    width: 22px; height: 22px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(255,45,149,0.4);
+  }
+  .slider-val {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    min-width: 38px;
+    text-align: right;
   }
 
-  .bg-button:active { background: rgba(232,255,71,0.1); border-color: var(--accent); }
-
-  .bg-strip { display: flex; gap: 12px; overflow-x: auto; padding: 8px 0; -webkit-overflow-scrolling: touch; }
-
-  .bg-thumb {
-    width: 62px; height: 62px; border-radius: 14px; object-fit: cover;
-    cursor: pointer; border: 3px solid transparent; filter: grayscale(75%); flex-shrink: 0;
+  /* COLOR PALETTES - compact */
+  .palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .swatch {
+    width: 38px; height: 38px;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+  .swatch:hover { transform: scale(1.1); }
+  .swatch.active {
+    border-color: #fff;
+    box-shadow: 0 0 0 3px var(--accent);
   }
 
-  .bg-thumb.active { border-color: var(--accent); filter: none; transform: scale(1.06); }
-
-  textarea {
-    width: 100%; height: 140px; background: var(--surface); border: 1px solid var(--border);
-    border-radius: 18px; padding: 16px; color: white; font-size: 15.5px; line-height: 1.65; resize: none;
+  .custom-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .custom-row label {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 600;
   }
 
-  .font-select {
-    width: 100%; padding: 16px 18px; background: var(--surface); border: 1px solid var(--border);
-    border-radius: 16px; color: white; font-size: 15px; cursor: pointer;
+  /* CANVAS */
+  .canvas-container {
+    width: 100%;
+    max-width: 300px;
+    position: relative;
+  }
+  .canvas-glow {
+    position: absolute;
+    inset: -4px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    opacity: 0.25;
+    z-index: 0;
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% {opacity:0.25} 50% {opacity:0.45} }
+  canvas {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  }
+  .canvas-label {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 8px;
+    font-weight: 500;
   }
 
-  .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-  .control-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 16px;
-  }
-
-  .ctrl-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-bottom: 10px; }
-
-  .ctrl-value { font-family: 'DM Mono', monospace; font-size: 26px; color: var(--accent); text-align: center; font-weight: 600; }
-
-  .spin-btn {
-    width: 50px; height: 50px; background: #0a0a0a; border: 1px solid var(--border);
-    border-radius: 14px; font-size: 28px; color: white; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .spin-btn:active { background: var(--accent); color: black; transform: scale(0.92); }
-
-  .text-actions { display: flex; gap: 12px; margin-top: 10px; }
-
-  .ghost-btn {
-    flex: 1; padding: 14px; background: transparent; border: 1px solid var(--border);
-    border-radius: 14px; color: var(--muted); font-size: 14px; cursor: pointer;
-  }
-
-  .ghost-btn.red { color: #ff6666; border-color: #ff6666; }
-
-  .download-btn {
-    width: 100%; height: 62px;
-    background: linear-gradient(90deg, var(--accent), #c8ff00);
-    color: black;
-    font-family: 'Syne', sans-serif;
-    font-size: 17px;
-    font-weight: 800;
-    letter-spacing: 0.6px;
+  /* DOWNLOAD BUTTON - iOS style */
+  .dl-btn {
+    width: 100%;
+    max-width: 300px;
+    height: 56px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
     border: none;
     border-radius: 18px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    box-shadow: 0 10px 30px rgba(232, 255, 71, 0.35);
+    gap: 8px;
+    box-shadow: 0 8px 20px rgba(255,45,149,0.4);
   }
+  .dl-btn:active { transform: scale(0.96); }
 
-  .download-btn:active { transform: scale(0.97); }
-
-  .toast {
-    position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
-    background: #1f1f1f; border: 1px solid var(--accent); color: var(--accent);
-    padding: 14px 26px; border-radius: 50px; font-size: 14.5px; font-weight: 500;
-    z-index: 1000; opacity: 0; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-    white-space: nowrap;
+  .save-hint {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    max-width: 300px;
   }
-
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-12px); }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">JIMOTOWN</div>
-  <div style="font-family:monospace; font-size:11px; color:#666;">POST LAB</div>
-</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('edit')">Edit</button>
+  <button class="tab" onclick="switchTab('preview')">Preview</button>
+</div>
 
 <div class="main">
-  <div class="preview-section">
-    <div class="preview-header">LIVE PREVIEW — 1080 × 1920</div>
-    <div class="preview-frame">
-      <canvas id="previewCanvas" width="1080" height="1920"></canvas>
+  <!-- EDIT PANEL -->
+  <div class="panel active" id="editPanel">
+
+    <!-- TEXT -->
+    <div class="section">
+      <div class="section-head">Your Text</div>
+      <div class="section-body">
+        <textarea id="textInput" placeholder="Type your meme text here…&#10;Each new line = new line"></textarea>
+        <div class="align-row">
+          <button class="align-btn" onclick="setAlign('left')" id="al-left">Left</button>
+          <button class="align-btn active" onclick="setAlign('center')" id="al-center">Center</button>
+          <button class="align-btn" onclick="setAlign('right')" id="al-right">Right</button>
+        </div>
+      </div>
     </div>
+
+    <!-- FONT DROPDOWN -->
+    <div class="section">
+      <div class="section-head">Font</div>
+      <div class="section-body">
+        <select id="fontSelect" onchange="selectFont(this.value)"></select>
+      </div>
+    </div>
+
+    <!-- SIZE & SPACING -->
+    <div class="section">
+      <div class="section-head">Size & Spacing</div>
+      <div class="section-body">
+        <div class="slider-row">
+          <span class="slider-label">Text Size</span>
+          <input type="range" id="fontSize" min="30" max="160" value="88" oninput="render(); document.getElementById('fsVal').textContent=this.value">
+          <span class="slider-val" id="fsVal">88</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">Line Gap</span>
+          <input type="range" id="lineGap" min="0" max="60" value="16" oninput="render(); document.getElementById('lgVal').textContent=this.value">
+          <span class="slider-val" id="lgVal">16</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">Vertical</span>
+          <input type="range" id="vPos" min="-380" max="380" value="0" oninput="render(); document.getElementById('vpVal').textContent=this.value">
+          <span class="slider-val" id="vpVal">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEXT COLOR -->
+    <div class="section">
+      <div class="section-head">Text Color</div>
+      <div class="section-body">
+        <div class="palette" id="txtPalette"></div>
+        <div class="custom-row">
+          <label>Custom</label>
+          <input type="color" id="customTxt" value="#ffffff" oninput="setTxtColor(this.value)">
+        </div>
+      </div>
+    </div>
+
+    <!-- BACKGROUND -->
+    <div class="section">
+      <div class="section-head">Background</div>
+      <div class="section-body">
+        <div class="palette" id="bgPalette"></div>
+        <div class="custom-row">
+          <label>Custom</label>
+          <input type="color" id="customBg" value="#000000" oninput="setBgColor(this.value)">
+        </div>
+      </div>
+    </div>
+
+    <!-- WATERMARK -->
+    <div class="section">
+      <div class="section-head">@JimoTown Watermark</div>
+      <div class="section-body">
+        <div class="slider-row">
+          <span class="slider-label">Opacity</span>
+          <input type="range" id="wmOp" min="0" max="100" value="35" oninput="render(); document.getElementById('wmVal').textContent=this.value+'%'">
+          <span class="slider-val" id="wmVal">35%</span>
+        </div>
+        <select id="wmPos" onchange="render()" style="margin-top:12px;">
+          <option value="bottom-right">Bottom Right</option>
+          <option value="bottom-left">Bottom Left</option>
+          <option value="bottom-center">Bottom Center</option>
+          <option value="top-right">Top Right</option>
+          <option value="top-left">Top Left</option>
+        </select>
+      </div>
+    </div>
+
   </div>
 
-  <div class="controls-section">
-    <!-- Background, Text, Font, Adjustments sections remain the same as previous version -->
-    <div>
-      <div class="section-label">Background</div>
-      <label class="bg-button">
-        <input type="file" id="bgFileInput" accept="image/*" multiple style="display:none;">
-        🖼️ Choose Background Image(s)
-      </label>
-      <div class="bg-strip" id="bgStrip"></div>
-      <button id="clearImgBtn" style="margin-top:12px;width:100%;padding:12px;background:transparent;border:1px solid #ff5555;color:#ff5555;border-radius:14px;display:none;">Clear All Backgrounds</button>
+  <!-- PREVIEW PANEL -->
+  <div class="panel preview-panel" id="previewPanel">
+    <div class="canvas-container">
+      <div class="canvas-glow"></div>
+      <canvas id="c" width="1080" height="1920"></canvas>
     </div>
-
-    <div>
-      <div class="section-label">Text Content</div>
-      <textarea id="textInput" placeholder="Write your viral caption here..."></textarea>
-      <div class="text-actions">
-        <button class="ghost-btn red" id="clearTextBtn">✕ Clear Text</button>
-      </div>
-    </div>
-
-    <div>
-      <div class="section-label">Font Style</div>
-      <select id="fontSelect" class="font-select"></select>
-    </div>
-
-    <div>
-      <div class="section-label">Adjustments</div>
-      <div class="controls-grid">
-        <div class="control-card">
-          <div class="ctrl-label">FONT SIZE</div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <button class="spin-btn" id="fontDec">−</button>
-            <span class="ctrl-value" id="sizeValue">82</span>
-            <button class="spin-btn" id="fontInc">+</button>
-          </div>
-        </div>
-        <div class="control-card">
-          <div class="ctrl-label">BLUR</div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <button class="spin-btn" id="blurDec">−</button>
-            <span class="ctrl-value" id="blurValue">5</span>
-            <button class="spin-btn" id="blurInc">+</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="save-button-container">
-      <button class="download-btn" id="downloadBtn">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
-        SAVE POST IMAGE
-      </button>
-    </div>
+    
+    
+    <button class="dl-btn" id="downloadBtn" onclick="downloadMeme()">
+      ⬇ Save to Photos
+    </button>
+    
+    
   </div>
 </div>
 
-<canvas id="fullCanvas" width="1080" height="1920" style="display:none;"></canvas>
-<div class="toast" id="toast"></div>
-
 <script>
-// ... (All previous variables and functions remain the same: bgImages, FONTS, buildFontDropdown, toGrayscaleDataUrl, addThumbnail, generatePreview, drawTextAndOverlay, drawWatermark, etc.)
+const FONTS = [
+  { name: 'Anton', label: 'Anton — Viral' },
+  { name: 'Bebas Neue', label: 'Bebas Neue — Bold' },
+  { name: 'Bangers', label: 'Bangers — Comic' },
+  { name: 'Black Ops One', label: 'Black Ops — Intense' },
+  { name: 'Russo One', label: 'Russo One — Modern' },
+  { name: 'Abril Fatface', label: 'Abril Fatface — Trending' },
+  { name: 'Righteous', label: 'Righteous — Clean' },
+  { name: 'Titan One', label: 'Titan One — Strong' },
+  { name: 'Sigmar One', label: 'Sigmar One — Fun' },
+  { name: 'Permanent Marker', label: 'Permanent Marker' },
+  { name: 'Alfa Slab One', label: 'Alfa Slab — Heavy' },
+  { name: 'Teko', label: 'Teko — Sharp' },
+  { name: 'Barlow Condensed', label: 'Barlow Condensed' },
+  { name: 'Kanit', label: 'Kanit — Thai' },
+  { name: 'Squada One', label: 'Squada One — Game' },
+  { name: 'Chakra Petch', label: 'Chakra Petch — Tech' },
+  { name: 'Lobster', label: 'Lobster — Retro' },
+  { name: 'Pacifico', label: 'Pacifico — Chill' },
+  { name: 'Oswald', label: 'Oswald — News' },
+  { name: 'Black Han Sans', label: 'Black Han Sans' },
+  { name: 'DM Serif Display', label: 'DM Serif Display' },
+  { name: 'Playfair Display', label: 'Playfair Display — Luxury' }
+];
 
-// Updated Download / Share Logic
-document.getElementById('downloadBtn').addEventListener('click', async () => {
-  const text = document.getElementById('textInput').value.trim();
-  if (!text) {
-    showToast('Please enter some text first');
-    return;
+const BG_COLORS = ['#000000','#1c1c1e','#2c2c2e','#16213e','#0f3460','#ff6b35','#ee4540','#ffffff','#f0e6ff'];
+const TXT_COLORS = ['#ffffff','#ffd700','#ff2d95','#00d4ff','#5f27cd','#f9ca24','#000000'];
+
+let bgColor = '#000000';
+let txtColor = '#ffffff';
+let textAlign = 'center';
+let selectedFont = 'Anton';
+
+function buildFontDropdown() {
+  const select = document.getElementById('fontSelect');
+  select.innerHTML = '';
+  FONTS.forEach(f => {
+    const opt = document.createElement('option');
+    opt.value = f.name;
+    opt.textContent = f.label;
+    opt.style.fontFamily = `"${f.name}", sans-serif`;
+    if (f.name === selectedFont) opt.selected = true;
+    select.appendChild(opt);
+  });
+}
+
+function selectFont(name) {
+  selectedFont = name;
+  render();
+}
+
+function buildPalette(containerId, colors, setter) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  colors.forEach(c => {
+    const s = document.createElement('div');
+    s.className = 'swatch';
+    s.style.background = c;
+    s.dataset.color = c;
+    s.onclick = () => setter(c);
+    el.appendChild(s);
+  });
+}
+
+function updateActiveSwatches(gridId, color) {
+  document.querySelectorAll(`#${gridId} .swatch`).forEach(s => {
+    s.classList.toggle('active', s.dataset.color === color);
+  });
+}
+
+function setBgColor(c) {
+  bgColor = c;
+  updateActiveSwatches('bgPalette', c);
+  document.getElementById('customBg').value = c;
+  render();
+}
+
+function setTxtColor(c) {
+  txtColor = c;
+  updateActiveSwatches('txtPalette', c);
+  document.getElementById('customTxt').value = c;
+  render();
+}
+
+function setAlign(a) {
+  textAlign = a;
+  document.querySelectorAll('.align-btn').forEach(b => b.classList.toggle('active', b.id === `al-${a}`));
+  render();
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (i===0 && tab==='edit') || (i===1 && tab==='preview')));
+  document.getElementById('editPanel').classList.toggle('active', tab === 'edit');
+  document.getElementById('previewPanel').classList.toggle('active', tab === 'preview');
+  if (tab === 'preview') render();
+}
+
+function wrapText(ctx, text, maxWidth) {
+  if (!text.trim()) return [''];
+  const words = text.split(' ');
+  const lines = []; let cur = '';
+  for (let w of words) {
+    const test = cur ? cur + ' ' + w : w;
+    if (ctx.measureText(test).width > maxWidth && cur) { lines.push(cur); cur = w; }
+    else cur = test;
+  }
+  if (cur) lines.push(cur);
+  return lines;
+}
+
+function render() {
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const W = 1080, H = 1920;
+  const fsize = parseInt(document.getElementById('fontSize').value);
+  const lgap = parseInt(document.getElementById('lineGap').value);
+  const vOff = parseInt(document.getElementById('vPos').value);
+  const wmOp = parseInt(document.getElementById('wmOp').value) / 100;
+  const wmPos = document.getElementById('wmPos').value;
+  const raw = document.getElementById('textInput').value || 'YOUR MEME';
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.font = `${fsize}px "${selectedFont}", sans-serif`;
+  ctx.textBaseline = 'top';
+
+  const margin = 100;
+  const maxW = W - margin * 2;
+  const inputLines = raw.split('\n');
+  let allLines = [];
+  for (let line of inputLines) {
+    if (!line.trim()) { allLines.push(''); continue; }
+    allLines = allLines.concat(wrapText(ctx, line, maxW));
   }
 
+  const lineH = fsize + lgap;
+  const totalH = allLines.length * lineH - lgap;
+  let y = (H - totalH) / 2 + vOff;
+
+  for (let line of allLines) {
+    const lw = ctx.measureText(line).width;
+    let x = textAlign === 'left' ? margin : textAlign === 'right' ? W - margin - lw : (W - lw) / 2;
+    ctx.fillStyle = txtColor;
+    ctx.fillText(line, x, y);
+    y += lineH;
+  }
+
+  // Watermark
+  ctx.font = `700 42px "Barlow Condensed", sans-serif`;
+  ctx.globalAlpha = wmOp;
+  ctx.fillStyle = txtColor;
+  const wmTxt = '@JimoTown';
+  const wmW = ctx.measureText(wmTxt).width;
+  const pad = 70;
+  let wx, wy;
+  if (wmPos === 'bottom-right') { wx = W - wmW - pad; wy = H - 70; }
+  else if (wmPos === 'bottom-left') { wx = pad; wy = H - 70; }
+  else if (wmPos === 'bottom-center') { wx = (W - wmW) / 2; wy = H - 70; }
+  else if (wmPos === 'top-right') { wx = W - wmW - pad; wy = pad; }
+  else { wx = pad; wy = pad; }
+  ctx.fillText(wmTxt, wx, wy);
+  ctx.globalAlpha = 1;
+}
+
+async function downloadMeme() {
   const btn = document.getElementById('downloadBtn');
-  const originalText = btn.innerHTML;
+  const original = btn.innerHTML;
+  btn.innerHTML = "Saving…";
   btn.disabled = true;
-  btn.innerHTML = `Generating...`;
+
+  render();
+  const canvas = document.getElementById('c');
+  const dataUrl = canvas.toDataURL('image/png', 0.95);
 
   try {
-    // Generate the image on the hidden full-size canvas
-    const canvas = document.getElementById('fullCanvas');
-    const ctx = canvas.getContext('2d');
-
-    if (currentBgIndex >= 0 && bgImages[currentBgIndex]) {
-      const img = new Image();
-      await new Promise(resolve => {
-        img.onload = () => {
-          const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
-          const dw = img.width * scale, dh = img.height * scale;
-          const ox = (canvas.width - dw) / 2, oy = (canvas.height - dh) / 2;
-
-          ctx.filter = blurAmount > 0 ? `blur(${blurAmount * 2.8}px)` : 'none';
-          ctx.drawImage(img, ox, oy, dw, dh);
-          ctx.filter = 'none';
-          drawTextAndOverlay(ctx, canvas);
-          resolve();
-        };
-        img.src = bgImages[currentBgIndex];
-      });
+    if (navigator.share && navigator.canShare) {
+      const blob = await (await fetch(dataUrl)).blob();
+      const file = new File([blob], "jimotown-meme.png", { type: "image/png" });
+      await navigator.share({ files: [file], title: "JimoTown Meme" });
+      btn.innerHTML = "✅ Shared!";
     } else {
-      ctx.fillStyle = '#111';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      drawTextAndOverlay(ctx, canvas);
+      const link = document.createElement('a');
+      link.download = 'jimotown-meme.png';
+      link.href = dataUrl;
+      link.click();
+      btn.innerHTML = "✅ Saved!";
     }
-
-    const dataUrl = canvas.toDataURL('image/png');
-    const res = await fetch(dataUrl);
-    const blob = await res.blob();
-    const file = new File([blob], "jimotown-post.png", { type: "image/png" });
-
-    // iOS Native Share Sheet
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share({
-          files: [file],
-          title: 'JimoTown Post',
-          text: 'Created with JimoTown Post Lab 🔥'
-        });
-        showToast('Shared via iOS sheet ✓');
-        return;
-      } catch (err) {
-        if (err.name !== 'AbortError') console.error(err);
-      }
-    }
-
-    // Fallback: normal download (Android, desktop, or if share fails)
-    const link = document.createElement('a');
-    link.download = `jimotown-post-${Date.now()}.png`;
-    link.href = dataUrl;
-    link.click();
-    showToast('Image downloaded');
-
-  } catch (err) {
-    console.error(err);
-    showToast('Failed to save — try again');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = originalText;
+  } catch(e) {
+    btn.innerHTML = "❌ Error";
   }
-});
 
-// Rest of the code (buildFontDropdown, generatePreview, controls, etc.) remains unchanged from the previous mobile version
+  setTimeout(() => {
+    btn.innerHTML = original;
+    btn.disabled = false;
+  }, 1600);
+}
 
-// Initialize
+function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+// Init
+document.getElementById('textInput').addEventListener('input', render);
 buildFontDropdown();
-generatePreview();
+buildPalette('bgPalette', BG_COLORS, setBgColor);
+buildPalette('txtPalette', TXT_COLORS, setTxtColor);
+updateActiveSwatches('bgPalette', bgColor);
+updateActiveSwatches('txtPalette', txtColor);
+render();
+
+if (isIOS()) {
+  document.getElementById('saveHint').innerHTML = 'Tap <strong>Save to Photos</strong> — goes straight to Camera Roll';
+}
 </script>
 </body>
 </html>
